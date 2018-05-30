@@ -1,3 +1,4 @@
+/* Hide the edit controls until we need them */
 #word-list-edit, #save-words, #cancel-edit-words, #default-words {
     display: none; 
 }
