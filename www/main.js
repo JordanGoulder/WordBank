@@ -1,9 +1,18 @@
 window.addEventListener('load', function (event) {
 
-    var words; // Array of words to use
+    // Get references to all the DOM elements
+    var dom = {
+        wordList:               document.getElementById('word-list'),
+        chosenWords:            document.getElementById('chosen-words'),
+        anotherButton:          document.getElementById('another'),
+        wordListTextArea:       document.getElementById('word-list-edit'),
+        cancelEditWordsButton:  document.getElementById('cancel-edit-words'),
+        saveWordsButton:        document.getElementById('save-words'),
+        editWordsButton:        document.getElementById('edit-words'),
+        defaultWordsButton:     document.getElementById('default-words')
+    };
 
-    // Get a reference to word list DOM element
-    var wordList = document.getElementById('word-list');
+    var words; // Array of words to use
 
     // Checks to see of storage is supported and available
     // From https://developer.mozilla.org/en-US/docs/Web/API/Web_Storage_API/Using_the_Web_Storage_API
@@ -64,8 +73,8 @@ window.addEventListener('load', function (event) {
     function populateWordListControl()
     {
         // Remove all the items from the word list
-        while (wordList.hasChildNodes()) {
-            wordList.removeChild(wordList.lastChild);
+        while (dom.wordList.hasChildNodes()) {
+            dom.wordList.removeChild(dom.wordList.lastChild);
         }
 
         // Add each of the words to the list
@@ -73,7 +82,7 @@ window.addEventListener('load', function (event) {
             var wordTextNode = document.createTextNode(value);
             var wordListItem = document.createElement("li");
             wordListItem.appendChild(wordTextNode);
-            wordList.appendChild(wordListItem);
+            dom.wordList.appendChild(wordListItem);
         });
     }
 
@@ -88,72 +97,64 @@ window.addEventListener('load', function (event) {
         }
 
         // Display the chosen words
-        var chosenWords = document.getElementById('chosen-words');
-        chosenWords.innerHTML = words[indexOne] + " " + words[indexTwo];
+        dom.chosenWords.innerHTML = words[indexOne] + " " + words[indexTwo];
     }
 
     // Choose a new set of words when the user asks nicely
-    var anotherButton = document.getElementById('another');
-    anotherButton.addEventListener('click', function (event) {
+    dom.anotherButton.addEventListener('click', function (event) {
         chooseNewWords();
     });
 
-    var wordListTextArea = document.getElementById('word-list-edit');
-    var cancelEditWordsButton = document.getElementById('cancel-edit-words');
-    var saveWordsButton = document.getElementById('save-words');
-    var editWordsButton = document.getElementById('edit-words');
-    var defaultWordsButton = document.getElementById('default-words');
-
     // User wants to cancel editing word list
-    cancelEditWordsButton.addEventListener('click', function (event) {
-        editWordsButton.style.display = "inline";
-        wordList.style.display = "block";
+    dom.cancelEditWordsButton.addEventListener('click', function (event) {
+        dom.editWordsButton.style.display = "inline";
+        dom.wordList.style.display = "block";
 
-        wordListTextArea.style.display = "none";
-        saveWordsButton.style.display = "none";
-        defaultWordsButton.style.display = "none";
-        cancelEditWordsButton.style.display = "none";
+        dom.wordListTextArea.style.display = "none";
+        dom.saveWordsButton.style.display = "none";
+        dom.defaultWordsButton.style.display = "none";
+        dom.cancelEditWordsButton.style.display = "none";
 
-        anotherButton.disabled = false;
+        dom.anotherButton.disabled = false;
     });
 
     // Users wants to use the default word list
-    defaultWordsButton.addEventListener('click', function (event) {
-        wordListTextArea.value = window.WordBank.words.reduce(function (prev, current) {
+    dom.defaultWordsButton.addEventListener('click', function (event) {
+        dom.wordListTextArea.value = window.WordBank.words.reduce(function (prev, current) {
             return prev + '\n' + current;
         });
     });
 
     // User wants to save the word list
-    saveWordsButton.addEventListener('click', function (event) {
-        editWordsButton.style.display = "inline";
-        wordListTextArea.style.display = "none";
+    dom.saveWordsButton.addEventListener('click', function (event) {
+        dom.editWordsButton.style.display = "inline";
+        dom.wordListTextArea.style.display = "none";
 
-        saveWordsButton.style.display = "none";
-        defaultWordsButton.style.display = "none";
-        cancelEditWordsButton.style.display = "none";
-        wordList.style.display = "block";
+        dom.saveWordsButton.style.display = "none";
+        dom.defaultWordsButton.style.display = "none";
+        dom.cancelEditWordsButton.style.display = "none";
+        dom.wordList.style.display = "block";
 
-        anotherButton.disabled = false;
+        dom.anotherButton.disabled = false;
 
-        words = wordListTextArea.value.split('\n');
+        words = dom.wordListTextArea.value.split('\n');
         storeWordList();
         populateWordListControl();
     });
 
     // User wants to edit the word list
-    editWordsButton.addEventListener('click', function(event) {
-        editWordsButton.style.display = "none";
-        wordListTextArea.style.display = "inline";
+    dom.editWordsButton.addEventListener('click', function(event) {
+        dom.editWordsButton.style.display = "none";
+        dom.wordListTextArea.style.display = "inline";
 
-        saveWordsButton.style.display = "inline";
-        defaultWordsButton.style.display = "inline";
-        cancelEditWordsButton.style.display = "inline";
-        wordList.style.display = "none";
+        dom.saveWordsButton.style.display = "inline";
+        dom.defaultWordsButton.style.display = "inline";
+        dom.cancelEditWordsButton.style.display = "inline";
+        dom.wordList.style.display = "none";
 
-        anotherButton.disabled = true;
+        dom.anotherButton.disabled = true;
 
-        wordListTextArea.value = words.reduce(function (prev, current) {
+        dom.wordListTextArea.value = words.reduce(function (prev, current) {
             return prev + '\n' + current;
         });
     });
