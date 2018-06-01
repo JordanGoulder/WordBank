@@ -57,7 +57,7 @@ window.addEventListener('load', function (event) {
             var wordsString = this.localStorage.getItem('words');
 
             if (wordsString === null) {
-                words = window.WordBank.words;
+                words = window.WordBank.DEFAULT_WORDS;
                 storeWordList();
             }
             else {
@@ -65,7 +65,7 @@ window.addEventListener('load', function (event) {
             }
         }
         else {
-            words = window.WordBank.words;
+            words = window.WordBank.DEFAULT_WORDS;
         }
     }
 
@@ -136,7 +136,7 @@ window.addEventListener('load', function (event) {
 
     // Users wants to use the default word list
     dom.defaultWordsButton.addEventListener('click', function (event) {
-        dom.wordListTextArea.value = window.WordBank.words.reduce(function (prev, current) {
+        dom.wordListTextArea.value = window.WordBank.DEFAULT_WORDS.reduce(function (prev, current) {
             return prev + '\n' + current;
         });
     });

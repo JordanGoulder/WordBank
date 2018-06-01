@@ -1,5 +1,5 @@
 window.WordBank = window.WordBank || {};
-window.WordBank.words = [
+window.WordBank.DEFAULT_WORDS = [
 'Naughty',
 'Cat',
 'Armageddon',
