@@ -99,15 +99,21 @@ window.addEventListener('load', function (event) {
     // Pick two new words and display them
     function chooseNewWords()
     {
-        // Pick two different indexs
-        var indexOne = Math.floor(Math.random() * words.length);
-        var indexTwo = Math.floor(Math.random() * words.length);
-        while ((words.length > 1) && (indexOne == indexTwo)) {
-            indexTwo = Math.floor(Math.random() * words.length);
-        }
+        if (words.length > 1) {
+            // Pick two different indices
+            var indexOne = Math.floor(Math.random() * words.length);
+            var indexTwo = Math.floor(Math.random() * words.length);
+            while (indexOne == indexTwo) {
+                indexTwo = Math.floor(Math.random() * words.length);
+            }
 
-        // Display the chosen words
-        dom.chosenWords.innerHTML = words[indexOne] + " " + words[indexTwo];
+            // Display the chosen words
+            dom.chosenWords.innerHTML = words[indexOne] + " " + words[indexTwo];
+        }
+        else {
+            // Tell the user they need more words
+            dom.chosenWords.innerHTML = 'Not enough words to choose from!';
+        }
     }
 
     // Choose a new set of words when the user asks nicely
