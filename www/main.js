@@ -77,9 +77,19 @@ window.addEventListener('load', function (event) {
             dom.wordList.removeChild(dom.wordList.lastChild);
         }
 
+        // Remove leading and trailing whitespace from words
+        words = words.map(function (word) {
+            return word.trim();
+        });
+
+        // filter out any empty strings
+        words = words.filter(function (word) {
+            return word !== '';
+        });
+
         // Add each of the words to the list
-        words.forEach(function (value) {
-            var wordTextNode = document.createTextNode(value);
+        words.forEach(function (word) {
+            var wordTextNode = document.createTextNode(word);
             var wordListItem = document.createElement("li");
             wordListItem.appendChild(wordTextNode);
             dom.wordList.appendChild(wordListItem);
