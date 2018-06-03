@@ -9,7 +9,9 @@ window.addEventListener('load', function (event) {
         cancelEditWordsButton:  document.getElementById('cancel-edit-words'),
         saveWordsButton:        document.getElementById('save-words'),
         editWordsButton:        document.getElementById('edit-words'),
-        defaultWordsButton:     document.getElementById('default-words')
+        defaultWordsButton:     document.getElementById('default-words'),
+        listEditControls:       document.getElementById('list-edit-controls'),
+        listDisplayControls:    document.getElementById('list-display-controls')
     };
 
     var words; // Array of words to use
@@ -123,14 +125,8 @@ window.addEventListener('load', function (event) {
 
     // User wants to cancel editing word list
     dom.cancelEditWordsButton.addEventListener('click', function (event) {
-        dom.editWordsButton.style.display = "inline";
-        dom.wordList.style.display = "block";
-
-        dom.wordListTextArea.style.display = "none";
-        dom.saveWordsButton.style.display = "none";
-        dom.defaultWordsButton.style.display = "none";
-        dom.cancelEditWordsButton.style.display = "none";
-
+        dom.listDisplayControls.classList.remove('hidden');
+        dom.listEditControls.classList.add('hidden');
         dom.anotherButton.disabled = false;
     });
 
@@ -143,14 +139,8 @@ window.addEventListener('load', function (event) {
 
     // User wants to save the word list
     dom.saveWordsButton.addEventListener('click', function (event) {
-        dom.editWordsButton.style.display = "inline";
-        dom.wordListTextArea.style.display = "none";
-
-        dom.saveWordsButton.style.display = "none";
-        dom.defaultWordsButton.style.display = "none";
-        dom.cancelEditWordsButton.style.display = "none";
-        dom.wordList.style.display = "block";
-
+        dom.listDisplayControls.classList.remove('hidden');
+        dom.listEditControls.classList.add('hidden');
         dom.anotherButton.disabled = false;
 
         words = dom.wordListTextArea.value.split('\n');
@@ -160,14 +150,8 @@ window.addEventListener('load', function (event) {
 
     // User wants to edit the word list
     dom.editWordsButton.addEventListener('click', function(event) {
-        dom.editWordsButton.style.display = "none";
-        dom.wordListTextArea.style.display = "inline";
-
-        dom.saveWordsButton.style.display = "inline";
-        dom.defaultWordsButton.style.display = "inline";
-        dom.cancelEditWordsButton.style.display = "inline";
-        dom.wordList.style.display = "none";
-
+        dom.listDisplayControls.classList.add('hidden');
+        dom.listEditControls.classList.remove('hidden');
         dom.anotherButton.disabled = true;
 
         dom.wordListTextArea.value = words.reduce(function (prev, current) {
