@@ -16,59 +16,16 @@ window.addEventListener('load', function (event) {
 
     var words; // Array of words to use
 
-    // Checks to see of storage is supported and available
-    // From https://developer.mozilla.org/en-US/docs/Web/API/Web_Storage_API/Using_the_Web_Storage_API
-    function storageAvailable(type)
+    // Write the word list to storage
+    function writeWordList()
     {
-        try {
-            var storage = window[type], x = '__storage_test__';
-            storage.setItem(x, x);
-            storage.removeItem(x);
-            return true;
-        }
-        catch (e) {
-            return e instanceof DOMException &&
-                (
-                    // everything except Firefox
-                    e.code === 22 ||
-                    // Firefox
-                    e.code === 1014 ||
-                    // test name field too, because code might not be present
-                    // everything except Firefox
-                    e.name === 'QuotaExceededEror' ||
-                    // Firefox
-                    e.name === 'NS_ERROR_DOM_QUOTA_REACHED'
-                ) &&
-                // acknowledge QuoteExceededError only if there's something already stored
-                storage.length !== 0;
-        }
+        window.Storage.set('words', words);
     }
 
-    // Store word list to browser localStorage
-    function storeWordList()
+    // Read the word list from storage or fall back to default list
+    function readWordList()
     {
-        if (storageAvailable('localStorage')) {
-            localStorage.setItem('words', JSON.stringify(words));
-        }
-    }
-
-    // Restore word list from browser localStorage or fall back to default list
-    function restoreWordList()
-    {
-        if (storageAvailable('localStorage')) {
-            var wordsString = this.localStorage.getItem('words');
-
-            if (wordsString === null) {
-                words = window.WordBank.DEFAULT_WORDS;
-                storeWordList();
-            }
-            else {
-                words = JSON.parse(wordsString);
-            }
-        }
-        else {
-            words = window.WordBank.DEFAULT_WORDS;
-        }
+        words = window.Storage.get('words', window.WordBank.DEFAULT_WORDS, true);
     }
 
     // Populate the word list control from the current array of words
@@ -144,7 +101,7 @@ window.addEventListener('load', function (event) {
         dom.anotherButton.disabled = false;
 
         words = dom.wordListTextArea.value.split('\n');
-        storeWordList();
+        writeWordList();
         populateWordListControl();
     });
 
@@ -159,8 +116,8 @@ window.addEventListener('load', function (event) {
         });
     });
 
-    // Restore the word list
-    restoreWordList();
+    // Read the word list
+    readWordList();
 
     // Populate the word list control
     populateWordListControl();
