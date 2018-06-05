@@ -42,13 +42,8 @@ var WordBank = (function (Storage, undefinded) {
     ];
 
     // Current set of words
-    var _words = [];
-
-    // Initialize WordBank
-    var init = function () {
-        // Read the words from storage or fall back to the default set
-        _words = Storage.get('words', _DEFAULT_WORDS, true);
-    }
+    // Read the words from storage or fall back to the default set
+    var _words = Storage.get('words', _DEFAULT_WORDS, true);
 
     // Return the current set of words
     var words = function () {
@@ -107,7 +102,6 @@ var WordBank = (function (Storage, undefinded) {
     }
 
     return {
-        init: init,
         words: words,
         setWords: setWords,
         defaultWords: defaultWords,

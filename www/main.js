@@ -83,9 +83,6 @@ window.addEventListener('load', function (event) {
         dom.wordListTextArea.value = WordBank.words().join('\n');
     });
 
-    // Initialize the WordBank
-    WordBank.init();
-
     // Update the word list
     updateWordList();
 
