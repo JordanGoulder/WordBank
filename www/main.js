@@ -14,40 +14,16 @@ window.addEventListener('load', function (event) {
         listDisplayControls:    document.getElementById('list-display-controls')
     };
 
-    var words; // Array of words to use
-
-    // Write the word list to storage
-    function writeWordList()
-    {
-        window.Storage.set('words', words);
-    }
-
-    // Read the word list from storage or fall back to default list
-    function readWordList()
-    {
-        words = window.Storage.get('words', window.WordBank.DEFAULT_WORDS, true);
-    }
-
-    // Populate the word list control from the current array of words
-    function populateWordListControl()
+    // Update the word list
+    function updateWordList()
     {
         // Remove all the items from the word list
         while (dom.wordList.hasChildNodes()) {
             dom.wordList.removeChild(dom.wordList.lastChild);
         }
 
-        // Remove leading and trailing whitespace from words
-        words = words.map(function (word) {
-            return word.trim();
-        });
-
-        // filter out any empty strings
-        words = words.filter(function (word) {
-            return word !== '';
-        });
-
         // Add each of the words to the list
-        words.forEach(function (word) {
+        WordBank.words().forEach(function (word) {
             var wordTextNode = document.createTextNode(word);
             var wordListItem = document.createElement("li");
             wordListItem.appendChild(wordTextNode);
@@ -55,19 +31,14 @@ window.addEventListener('load', function (event) {
         });
     }
 
-    // Pick two new words and display them
-    function chooseNewWords()
+    // Update the chosen words
+    function updateChosenWords()
     {
-        if (words.length > 1) {
-            // Pick two different indices
-            var indexOne = Math.floor(Math.random() * words.length);
-            var indexTwo = Math.floor(Math.random() * words.length);
-            while (indexOne == indexTwo) {
-                indexTwo = Math.floor(Math.random() * words.length);
-            }
+        var chosenWords = WordBank.chooseRandomWords();
 
+        if (chosenWords.length > 1) {
             // Display the chosen words
-            dom.chosenWords.innerHTML = words[indexOne] + " " + words[indexTwo];
+            dom.chosenWords.innerHTML = chosenWords.join(' ');
         }
         else {
             // Tell the user they need more words
@@ -77,7 +48,7 @@ window.addEventListener('load', function (event) {
 
     // Choose a new set of words when the user asks nicely
     dom.anotherButton.addEventListener('click', function (event) {
-        chooseNewWords();
+        updateChosenWords();
     });
 
     // User wants to cancel editing word list
@@ -89,9 +60,7 @@ window.addEventListener('load', function (event) {
 
     // Users wants to use the default word list
     dom.defaultWordsButton.addEventListener('click', function (event) {
-        dom.wordListTextArea.value = window.WordBank.DEFAULT_WORDS.reduce(function (prev, current) {
-            return prev + '\n' + current;
-        });
+        dom.wordListTextArea.value = WordBank.defaultWords().join('\n');
     });
 
     // User wants to save the word list
@@ -100,9 +69,9 @@ window.addEventListener('load', function (event) {
         dom.listEditControls.classList.add('hidden');
         dom.anotherButton.disabled = false;
 
-        words = dom.wordListTextArea.value.split('\n');
-        writeWordList();
-        populateWordListControl();
+        WordBank.setWords(dom.wordListTextArea.value.split('\n'));
+
+        updateWordList();
     });
 
     // User wants to edit the word list
@@ -111,17 +80,15 @@ window.addEventListener('load', function (event) {
         dom.listEditControls.classList.remove('hidden');
         dom.anotherButton.disabled = true;
 
-        dom.wordListTextArea.value = words.reduce(function (prev, current) {
-            return prev + '\n' + current;
-        });
+        dom.wordListTextArea.value = WordBank.words().join('\n');
     });
 
-    // Read the word list
-    readWordList();
+    // Initialize the WordBank
+    WordBank.init();
 
-    // Populate the word list control
-    populateWordListControl();
+    // Update the word list
+    updateWordList();
 
-    // Choose the first set of words
-    chooseNewWords();
+    // Update the chosen words
+    updateChosenWords();
 });
