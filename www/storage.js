@@ -39,7 +39,7 @@ var Storage = (function (undefinded) {
         }
     };
 
-    // Gets the value of the data stroed at key if storage is available
+    // Gets the value of the data stored at key if storage is available
     // If the value of the key cannot be retrieved and a default is specified, the default will be used
     // If the storeDefault value is true then the default will also be stored at the key
     var get = function (key, defaultValue, storeDefault) {
