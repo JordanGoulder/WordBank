@@ -86,7 +86,7 @@ var WordBank = (function (Storage, undefinded) {
         while (count--) {
             var index;
 
-            // Choose the next work being careful not to choose one that was
+            // Choose the next work, being careful not to choose one that has
             // already been chosen
             do {
                 index = Math.floor(Math.random() * _words.length);
