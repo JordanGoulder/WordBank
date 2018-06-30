@@ -1,3 +1,5 @@
+#include "wordbank.js"
+
 window.addEventListener('load', function windowLoad() {
   // Get references to all the DOM elements
   var dom = {

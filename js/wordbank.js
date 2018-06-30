@@ -1,3 +1,5 @@
+#include "storage.js"
+
 window.WordBank = (function WordBank(Storage) {
   // Set of default words to use
   var _DEFAULT_WORDS = [
